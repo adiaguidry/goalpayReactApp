@@ -55,17 +55,19 @@ class App extends Component {
         fixed: false,
         childCompleted: true,
         completed: false,
-        paid: "0"
+        paid: "0",
+        paymentAllocated: false
       },
       {
         _id: 2345,
-        task: "Fill out daily planner and have Mom or Dad sign it",
+        task: "Have my planner signed everyday this week",
         note: "",
         noteStatus: false,
         fixed: false,
         childCompleted: false,
         completed: false,
-        paid: "0"
+        paid: "0",
+        paymentAllocated: false
       },
       {
         _id: 3456,
@@ -75,24 +77,33 @@ class App extends Component {
         fixed: false,
         childCompleted: false,
         completed: false,
-        paid: "0"
+        paid: "0",
+        paymentAllocated: false
+      },
+      {
+        _id: 34567,
+        task: "Clean bedroom without being told",
+        note: "",
+        noteStatus: false,
+        fixed: false,
+        childCompleted: false,
+        completed: false,
+        paid: "0",
+        paymentAllocated: false
       }
     ],
     paidGoals: []
   };
 
-  componentDidUpdate(prev, st) {}
-
   handleAdminSubmit = e => {
     e.preventDefault();
     this.paidOffGoals();
+    this.handleStateChangePaid();
   };
 
   handlePaymentChange = ({ currentTarget: input }, goal) => {
-    //console.log("input name:", input.name);
     const goals = [...this.state.goals];
     const index = goals.findIndex(g => g === goal);
-    console.log("index", goals[index][input.name]);
     goals[index][input.name] = input.value;
     this.setState({ goals });
   };
@@ -103,41 +114,97 @@ class App extends Component {
     goals[index].completed = true;
   };
 
+  handleStateChangePaid = () => {
+    const paid = true;
+    this.setState({ paid });
+  };
+
   handleAddAccount = e => {
     e.preventDefault();
-    const accounts = [this.state.newAccount, ...this.state.accounts];
-    const newAccount = {
-      _id: " ",
-      task: " ",
-      note: ""
+    let newAccount = this.state.newAccount;
+    console.log("submit newAccount._id: ", newAccount._id);
+    newAccount._id
+      ? this.handleFindandEditAccount()
+      : this.handleCreateNewAccount();
+    newAccount = {
+      _id: "",
+      accountName: "",
+      goalAmount: "",
+      currentAmount: ""
     };
-    console.log(newAccount);
+    this.setState({ newAccount });
+  };
+
+  handleCreateNewAccount = () => {
+    const newAccount = this.state.newAccount;
+    newAccount._id = Date.now();
+    const accounts = [this.state.newAccount, ...this.state.accounts];
     this.setState({ accounts, newAccount });
   };
+
+  handleFindandEditAccount = () => {
+    const newAccount = this.state.newAccount;
+    const accounts = [...this.state.accounts];
+    const index = accounts.findIndex(a => a._id === newAccount._id);
+
+    //set account to newAccount properties
+    accounts[index] = {
+      _id: newAccount._id,
+      accountName: newAccount.accountName,
+      goalAmount: newAccount.goalAmount,
+      currentAmount: newAccount.currentAmount
+    };
+    console.log(accounts, newAccount);
+    this.setState({ accounts });
+  };
+
   handleAccountChange = ({ currentTarget: input }) => {
     const newAccount = { ...this.state.newAccount };
-    newAccount._id = Date.now();
     newAccount[input.name] = input.value;
     newAccount[input.name] = input.value;
     newAccount[input.name] = input.value;
+    console.log("change newAccount._id: ", newAccount._id);
     this.setState({ newAccount });
-    console.log(newAccount);
   };
 
   handleAccountEdit = account => {
-    const editAccount = {
+    const newAccount = {
       _id: account._id,
       accountName: account.accountName,
       goalAmount: account.goalAmount,
       currentAmount: account.currentAmount
     };
-    this.setState({ newAccount: editAccount });
-    console.log("edit", account);
+    console.log("edit newAccount._id: ", newAccount._id);
+    this.setState({ newAccount });
   };
+  handleAddMoneyToAccount = (a, i) => {
+    const accounts = [...this.state.accounts];
+    const index = accounts.findIndex(account => account._id === a._id);
+    const currentAmount =
+      Number(accounts[index].currentAmount) + Number(i.amount);
+    accounts[index].currentAmount = currentAmount.toString();
+    const goals = [...this.state.goals];
+    const indexGoal = goals.findIndex(goal => goal._id === i._id);
+    goals[indexGoal].paymentAllocated = true;
+    this.setState({ accounts, goals });
+    this.paidOffGoals();
+  };
+
+  handleDeleteAccount = account => {
+    const accounts = [...this.state.accounts];
+    const index = accounts.findIndex(a => a._id === account._id);
+    accounts.splice(index, 1);
+    this.setState({ accounts });
+    console.log("delete: ", account);
+  };
+
   paidOffGoals = () => {
-    const paidGoals = this.state.goals.filter(goal => goal.completed === true);
+    const paidGoals = this.state.goals.filter(
+      goal => goal.completed === true && goal.paymentAllocated !== true
+    );
     this.setState({ paidGoals });
-    console.log(paidGoals);
+
+    console.log("paid", paidGoals);
   };
 
   handleAddGoal = e => {
@@ -146,7 +213,6 @@ class App extends Component {
     this.setState({ goals });
     const newGoal = { _id: " ", task: " ", note: "" };
     this.setState({ newGoal });
-    console.log("goal added", this.state.newGoal);
   };
 
   handleNewGoal = e => {
@@ -156,6 +222,14 @@ class App extends Component {
     newGoal.note = "";
     newGoal.childCompleted = false;
     this.setState({ newGoal });
+  };
+
+  handleDeleteGoal = goal => {
+    const goals = [...this.state.goals];
+    const index = goals.findIndex(g => g._id === goal._id);
+    goals.splice(index, 1);
+    this.setState({ goals });
+    console.log("delete: ", goal);
   };
 
   handleChildCompletedGoal = goal => {
@@ -173,14 +247,10 @@ class App extends Component {
     this.setState({ goals });
   };
 
-  handleDeleteGoal() {
-    console.log("goal deleted");
-  }
-
   render() {
     return (
       <React.Fragment>
-        <NavBar />
+        <NavBar paidGoals={this.state.paidGoals} />
         <Switch>
           <Route
             path="/accounts"
@@ -189,6 +259,7 @@ class App extends Component {
                 {...props}
                 accounts={this.state.accounts}
                 paidGoals={this.state.paidGoals}
+                handleAddMoneyToAccount={this.handleAddMoneyToAccount}
               />
             )}
           />
@@ -222,6 +293,7 @@ class App extends Component {
                 newAccount={this.state.newAccount}
                 handleAccountChange={this.handleAccountChange}
                 handleAccountEdit={this.handleAccountEdit}
+                handleDeleteAccount={this.handleDeleteAccount}
               />
             )}
           />
@@ -231,7 +303,7 @@ class App extends Component {
               <Home
                 {...props}
                 accounts={this.state.accounts}
-                paidGoals={this.state.paidGoals}
+                goals={this.state.goals}
               />
             )}
           />

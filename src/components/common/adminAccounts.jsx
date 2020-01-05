@@ -5,7 +5,8 @@ const AdminLayout = ({
   handleAddAccount,
   newAccount,
   handleAccountChange,
-  handleAccountEdit
+  handleAccountEdit,
+  handleDeleteAccount
 }) => {
   return (
     <div className="col-md-6">
@@ -16,37 +17,44 @@ const AdminLayout = ({
             <label htmlFor="acount1">Account Name</label>
             <input
               onChange={handleAccountChange}
+              placeholder="ex. Dart Wars"
               name="accountName"
               type="text"
               className="form-control"
-              placeholder="Disneyland"
+              value={newAccount.accountName}
             />
           </div>
           <div className="col-md-3 form-group">
             <label htmlFor="goal">Goal Amout</label>
             <input
-              value={newAccount.goal}
+              value={newAccount.goalAmount}
               onChange={handleAccountChange}
+              placeholder="20"
               name="goalAmount"
               type="text"
               className="form-control"
-              placeholder="$120.00"
             />
           </div>
           <div className="col-md-3 form-group">
             <label htmlFor="current">Current Amout</label>
             <input
-              value={newAccount.goal}
+              value={newAccount.currentAmount}
               onChange={handleAccountChange}
+              placeholder="0"
               name="currentAmount"
               type="text"
               className="form-control"
-              placeholder="$10.00"
             />
           </div>
-          <div className="col-md-2 form-group">
-            <button className="btn btn-primary mt-4">Add</button>
-          </div>
+          {newAccount._id === "" ? (
+            <div className="col-md-2 form-group">
+              <button className="btn btn-primary mt-4">Add</button>
+            </div>
+          ) : (
+            <div className="col-md-2 form-group">
+              <button className="btn btn-success mt-4">Save Edit</button>
+            </div>
+          )}
         </div>
       </form>
       <table className="table table-striped">
@@ -72,7 +80,10 @@ const AdminLayout = ({
                   <i className="fa fa-pencil" />
                 </button>
 
-                <button className="btn btn-danger">
+                <button
+                  onClick={() => handleDeleteAccount(account)}
+                  className="btn btn-danger"
+                >
                   <i className="fa fa-trash" />
                 </button>
               </td>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
-const NavBar = ({ user }) => {
+const NavBar = ({ user, paidGoals }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
@@ -46,6 +46,13 @@ const NavBar = ({ user }) => {
           )}
         </div>
       </div>
+
+      {paidGoals.length !== 0 && (
+        <p className="alert alert-success text-right p-1">
+          <i className="fa fa-money fa-lg mr-1" />
+          You just got paid
+        </p>
+      )}
     </nav>
   );
 };

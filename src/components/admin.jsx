@@ -8,7 +8,7 @@ class Admin extends Component {
     const goals = this.props.goals.filter(
       goal => goal.childCompleted === true && goal.completed !== true
     );
-    const paidGoals = this.props.paidGoals.map(goal => goal.paid);
+    const paidGoals = this.props.goals.map(goal => goal.paid);
     return (
       <React.Fragment>
         <div className="row">
@@ -33,6 +33,7 @@ class Admin extends Component {
             handleAddAccount={this.props.handleAddAccount}
             handleAccountChange={this.props.handleAccountChange}
             handleAccountEdit={this.props.handleAccountEdit}
+            handleDeleteAccount={this.props.handleDeleteAccount}
           />
         </div>
       </React.Fragment>

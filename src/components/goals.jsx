@@ -6,13 +6,31 @@ class Goals extends Component {
   render() {
     const goals = this.props.goals.filter(goal => goal.childCompleted !== true);
     const completed = this.props.goals.filter(
-      goal => goal.childCompleted === true && goal.completed != true
+      goal => goal.childCompleted === true && goal.completed !== true
     );
+    const notes = this.props.goals.filter(goal => goal.note !== "");
+    console.log(this.props);
 
     return (
       <div className="container">
-        <div className="row py-5">
-          <h2>Create your Goals</h2>
+        <div className="row pt-5">
+          <div className="col-md-7">
+            <h2>Create your Goals</h2>
+          </div>
+          <div className="col-md-5">
+            <h3>Completed Goals</h3>
+            {notes.length === 0 ? (
+              " "
+            ) : (
+              <div className="alert alert-danger">
+                <p>
+                  <i className="fa fa-exclamation fa-lg mr-1" />
+                  {notes.length} of your goals came back with a note attached.
+                  Fix it to get paid.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
         <div className="row">
           <div className="col-md-7">
@@ -37,10 +55,10 @@ class Goals extends Component {
                     onClick={() => this.props.handleChildCompletedGoal(goal)}
                     className="btn btn-sm btn-success mx-2"
                   >
-                    <i class="fa fa-check-circle fa-lg" />
+                    <i className="fa fa-check-circle fa-lg" />
                   </button>
                   <button
-                    onClick={this.props.handleDeleteGoal}
+                    onClick={() => this.props.handleDeleteGoal(goal)}
                     className="btn btn-sm btn-danger"
                   >
                     <i className="fa fa-trash fa-lg" />
@@ -56,32 +74,24 @@ class Goals extends Component {
           </div>
 
           <div className="col-md-5">
-            <h4>
+            <h6>
               You've got {completed.length} completed Goals Awaiting Approval
               and Payment
-            </h4>
+            </h6>
 
             {completed.map(goal => (
-              <div className="alert alert-warning">
+              <div className="alert alert-info">
                 <p>{goal.note && <h3>You've got a goal renturn</h3>}</p>
-                <p className="">
-                  {goal.task}
-                  <button
-                    onClick={() => this.props.handleChildCompletedGoal(goal)}
-                    className="btn btn-sm btn-warning mx-2"
-                  >
-                    <i class="fa fa-check-circle fa-lg" />
-                  </button>
-                </p>
+                <p className="">{goal.task}</p>
                 <p className="mb-0">
                   {goal.note && (
                     <span className="text-danger">
                       {goal.note}
                       <button
                         onClick={() => this.props.handleChildFixedGoal(goal)}
-                        className="btn"
+                        className="btn btn-info btn-sm m-1"
                       >
-                        fix it
+                        Fixed it
                       </button>
                     </span>
                   )}

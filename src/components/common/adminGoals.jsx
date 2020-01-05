@@ -1,6 +1,5 @@
 import React from "react";
 import totalPaid from "./totalPaid";
-let note = false;
 const Goals = ({
   paidGoals,
   goals,
@@ -17,7 +16,7 @@ const Goals = ({
         complete goal to standard
       </small>
       {goals.map(goal => (
-        <div className="alert alert-primary">
+        <div key={goal._id} className="alert alert-primary">
           <p className="">{goal.task}</p>
           <hr />
           <div className="mb-0">
