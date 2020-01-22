@@ -12,7 +12,12 @@ This is an on going project that I am currently pouring myself into. I have plan
 
 This project is also intended to teach children the value of a dollar. As goals are established by the child, the view in the Admin interface was also updated. 
 
+![](images/goals.png)
+![](images/bank.png)
 
 As they completes the goal, they hit a button and the parent is notified. The parent decides how much the child is paid for a job well done. I pay him through virtual money. That money is allocated to accounts through Reacts Drag and Drop package.
+
+![](images/admin.png)
+
 
 Currently live on Heroku: [Dashboard-live](https://adiaguidry.github.io/deploy-goalspay-github-pages/#/admin)
