@@ -1,4 +1,4 @@
-![](mages/home.png)
+![](images/home.png)
 
 
 # Goals Pay Off
