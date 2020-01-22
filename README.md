@@ -20,4 +20,4 @@ As they completes the goal, they hit a button and the parent is notified. The pa
 ![](images/admin.png)
 
 
-Currently live on Heroku: [Dashboard-live](https://adiaguidry.github.io/deploy-goalspay-github-pages/#/admin)
+Currently live: [Dashboard-live](https://adiaguidry.github.io/deploy-goalspay-github-pages/#/admin)
