@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import kid from "../images/kid-on-ipad.png";
+import kid from "../images/goals.jpg";
 import totalPaid from "./common/totalPaid";
 
 const Home = ({ accounts, goals }) => {
@@ -22,13 +22,11 @@ const Home = ({ accounts, goals }) => {
           </div>
         </div>
       </div>
-      <div className="col-md-4">
-        <div className="">
-          <div className="card text-white bg-success">
+      <div className="col-md-3">
+       
             <div className="card-body">
               <h2>
-                You're Rocking your goals and getting paid along the way! You
-                got {incompleteGoals.length} incomplete goals
+                You got {incompleteGoals.length} incomplete goals
                 {incompleteGoals.length !== 0 ? "so get to work." : "."}
               </h2>
               <h5>Heres a quick breakdown of your cash:</h5>
@@ -36,26 +34,19 @@ const Home = ({ accounts, goals }) => {
                 Your overall cash made from compeleting goals: $
                 {totalPaid(cash)}
               </h6>
-            </div>
+            
           </div>
-        </div>
       </div>
-      <div className="col-md-4">
-        <div className="">
-          <div className="">
+      <div className="col-md-6">
             <div className="card-body text-center">
               <img width="100%" src={kid} alt="" />
-            </div>
-          </div>
         </div>
       </div>
-      <div className="col-md-4">
-        <div className="">
-          <div className="card text-white bg-primary">
+      <div className="col-md-3">
             <div className="card-body">
               <h2>
                 You currenty have {accounts.length} accounts set up toward your
-                savings. If you want to add or change that talk to your folks.
+                savings.
               </h2>
               <h5>Heres a quick breakdown of your accounts:</h5>
               <h6>
@@ -64,8 +55,6 @@ const Home = ({ accounts, goals }) => {
                 {Number(DisneyAccount.goalAmount) -
                   Number(DisneyAccount.currentAmount)}
               </h6>
-            </div>
-          </div>
         </div>
       </div>
       <div className="col-md-12">

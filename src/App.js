@@ -7,6 +7,7 @@ import NavBar from "./components/navBar";
 import Home from "./components/home";
 import { Route, Switch, Redirect } from "react-router-dom";
 
+
 class App extends Component {
   state = {
     newGoal: {
